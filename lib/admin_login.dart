@@ -61,7 +61,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
       if (responseData['status'] == 'success') {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Adminpage()),
+          MaterialPageRoute(builder: (context) => ALogin()),
         );
       } else {
         // Show an error message if login fails

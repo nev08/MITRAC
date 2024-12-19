@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'common.dart';
-import 'display.dart'; // Create a new file for the video player page
+import 'display.dart';
 
 class DisplayVideos extends StatefulWidget {
   @override
@@ -37,7 +37,7 @@ class _DisplayVideosState extends State<DisplayVideos> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.indigo[300],
-        title: Text('Video Player Demo'),
+        title: Text('Videos'),
       ),
       body: FutureBuilder<List<Video>>(
         future: _videos,

@@ -13,8 +13,6 @@ import 'package:schizo/search_view_reasons.dart';
 import 'package:schizo/view_ans.dart';
 import 'common.dart';
 
-// Your other dependencies and pages imports here
-
 void main() {
   runApp(MyApp(d_id: "your_doctor_id_here"));
 }
@@ -30,11 +28,13 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   List<dynamic> patients = [];
+  int unreadNotifications = 0;
 
   @override
   void initState() {
     super.initState();
     fetchPatients();
+    fetchUnreadNotifications();
   }
 
   Future<void> fetchPatients() async {
@@ -45,12 +45,29 @@ class _MyAppState extends State<MyApp> {
     if (response.statusCode == 200) {
       setState(() {
         patients = jsonDecode(response.body)['patients'];
-        // Sort patients by some criteria, for example, by patient ID
         patients.sort((a, b) => b['patient_id'].compareTo(a['patient_id']));
       });
     } else {
       print('Failed to load patients');
     }
+  }
+
+  void fetchUnreadNotifications() async {
+    final response = await http.get(Uri.parse(notifi));
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      setState(() {
+        unreadNotifications = int.tryParse(data['unreadCount'].toString()) ?? 0;
+      });
+    } else {
+      throw Exception('Failed to load notifications');
+    }
+  }
+
+  void handleNotificationsRead() {
+    setState(() {
+      unreadNotifications = 0;
+    });
   }
 
   Widget buildProfileImage(String base64Image) {
@@ -73,13 +90,13 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(70.0), // Adjust as needed
+          preferredSize: Size.fromHeight(70.0),
           child: AppBar(
             backgroundColor: Colors.indigo[300],
             elevation: 20,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(30), // Adjust as needed
+                bottom: Radius.circular(30),
               ),
             ),
             title: Text(
@@ -97,20 +114,51 @@ class _MyAppState extends State<MyApp> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Notifications()),
+                      MaterialPageRoute(
+                        builder: (context) => Notifications(onNotificationsRead: handleNotificationsRead),
+                      ),
                     );
                   },
-                  child: Container(
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white.withOpacity(0.5),
-                    ),
-                    child: Icon(
-                      Icons.notifications,
-                      color: Colors.black,
-                      size: 30,
-                    ),
+                  child: Stack(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white.withOpacity(0.5),
+                        ),
+                        child: Icon(
+                          Icons.notifications,
+                          color: Colors.black,
+                          size: 30,
+                        ),
+                      ),
+                      if (unreadNotifications > 0)
+                        Positioned(
+                          right: 6,
+                          top: 6,
+                          child: Container(
+                            padding: EdgeInsets.all(2),
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              shape: BoxShape.circle,
+                            ),
+                            constraints: BoxConstraints(
+                              minWidth: 14,
+                              minHeight: 14,
+                            ),
+                            child: Center(
+                              child: Text(
+                                '$unreadNotifications',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
                 ),
               ),
@@ -306,7 +354,6 @@ class _MyAppState extends State<MyApp> {
                   ],
                 ),
                 SizedBox(height: 15),
-                // Display recently added patients in cards
                 ...patients.map((patient) {
                   return Card(
                     margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
@@ -330,7 +377,6 @@ class _MyAppState extends State<MyApp> {
                           Text('Name: ${patient['name']}'),
                           Text('Sex: ${patient['sex']}'),
                           Text('Mobile Number: ${patient['mobile_number']}'),
-                          // Add other patient details as needed
                         ],
                       ),
                     ),
@@ -344,8 +390,6 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
- // Import the PatientProfileUpdate page
-
 
 class PatientDetailsPage extends StatefulWidget {
   final String patientId;
@@ -374,7 +418,6 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
         patientDetails = jsonDecode(response.body);
       });
     } else {
-      // Handle error
       print('Failed to fetch patient details');
     }
   }
@@ -383,7 +426,28 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Patient Details'),
+        title: Text(
+          'Patients Details',
+          style: TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+            color: Colors.white, // Set the text color to white
+          ),
+        ),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        backgroundColor: Colors.indigo[300],
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(30),
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20),
@@ -395,18 +459,17 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Placeholder image
                 ClipOval(
                   child: SizedBox(
-                    width: 200, // Adjust this value based on your layout
-                    height: 200, // Ensure width and height are equal for circular clipping
+                    width: 200,
+                    height: 200,
                     child: Center(
                       child: patientDetails['img1'] != null
                           ? Image.network(
-                        'http://'+ip+'/app/' + patientDetails['img1'],
+                          ip +"/"+  patientDetails['img1'],
                         fit: BoxFit.cover,
-                        width: 200, // Adjust this value to match the size of the SizedBox
-                        height: 200, // Adjust this value to match the size of the SizedBox
+                        width: 200,
+                        height: 200,
                       )
                           : Icon(
                         Icons.person,
@@ -417,7 +480,6 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                   ),
                 ),
                 SizedBox(height: 10),
-                // Patient details
                 buildRow('Patient ID', patientDetails['tx1']),
                 buildRow('Name', patientDetails['tx2']),
                 buildRow('Age', patientDetails['tx3']),
@@ -429,7 +491,6 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                 buildRow('Disease Status', patientDetails['tx9']),
                 buildRow('Duration', patientDetails['tx10']),
                 SizedBox(height: 5),
-                // Edit button
                 Center(
                   child: ElevatedButton(
                     onPressed: () {
@@ -438,7 +499,7 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                         MaterialPageRoute(
                           builder: (context) => PatientProfileUpdate(
                             patientId: widget.patientId,
-                            patientDetails: patientDetails, // Pass patient details to PatientProfileUpdate
+                            patientDetails: patientDetails,
                           ),
                         ),
                       );
@@ -461,7 +522,7 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-            width: 150, // Adjust the width based on your preference
+            width: 150,
             child: Text(
               '$label',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
@@ -484,11 +545,3 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
     );
   }
 }
-
-
-
-
-
-
-
-

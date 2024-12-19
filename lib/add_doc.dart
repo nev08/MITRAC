@@ -128,7 +128,7 @@ class _AdddoctorState extends State<Adddoctor> {
             },
           ),
           toolbarHeight: 80,
-          backgroundColor: Colors.blue,
+          backgroundColor: Colors.indigo[300],
           title: Text(
             'Add Doctor',
             style: TextStyle(fontSize: 25),
@@ -420,7 +420,7 @@ class _AdddoctorState extends State<Adddoctor> {
                         child: ElevatedButton(
                           onPressed: _submitForm,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue, // Background color
+                            backgroundColor: Colors.white, // Background color
                             padding: EdgeInsets.symmetric(vertical: 15, horizontal: 40),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
@@ -429,7 +429,7 @@ class _AdddoctorState extends State<Adddoctor> {
                           child: Text(
                             'Save',
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Colors.indigo[300],
                               fontSize: 24,
                             ),
                           ),

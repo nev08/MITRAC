@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'common.dart ';
+import 'common.dart';
 
 class CalendarScreen extends StatelessWidget {
   @override
@@ -19,7 +19,7 @@ class CalendarScreen extends StatelessWidget {
                   bottomLeft: Radius.circular(20),
                   bottomRight: Radius.circular(20),
                 ),
-                color: Colors.indigo[300], // Change the color as needed
+                color: Colors.indigo[300],
               ),
               child: Center(
                 child: Text(
@@ -43,7 +43,7 @@ class CalendarScreen extends StatelessWidget {
             top: 438,
             left: (MediaQuery.of(context).size.width - 286) / 2,
             child: Image.asset(
-              'assets/img.png', // Replace 'img.png' with your image asset path
+              'assets/img.png',
               width: 286,
               height: 232,
             ),
@@ -62,7 +62,6 @@ class CalendarView extends StatelessWidget {
       firstDate: DateTime.now(),
       lastDate: DateTime.now().add(Duration(days: 365)),
       onDateChanged: (date) {
-        // Handle date changes
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -75,9 +74,9 @@ class CalendarView extends StatelessWidget {
 }
 
 class AvailableSlots1Page extends StatefulWidget {
-  final DateTime selectedDate; // Define selectedDate parameter
+  final DateTime selectedDate;
 
-  AvailableSlots1Page({required this.selectedDate}); // Constructor
+  AvailableSlots1Page({required this.selectedDate});
 
   @override
   _AvailableSlots1PageState createState() => _AvailableSlots1PageState();
@@ -90,7 +89,7 @@ class _AvailableSlots1PageState extends State<AvailableSlots1Page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView( // Wrap Column with SingleChildScrollView
+      body: SingleChildScrollView(
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -102,7 +101,7 @@ class _AvailableSlots1PageState extends State<AvailableSlots1Page> {
                     bottomLeft: Radius.circular(15),
                     bottomRight: Radius.circular(15),
                   ),
-                  color: Colors.blue,
+                  color: Colors.indigo[300],
                 ),
                 child: Center(
                   child: Text(
@@ -115,15 +114,15 @@ class _AvailableSlots1PageState extends State<AvailableSlots1Page> {
                   ),
                 ),
               ),
-              SizedBox(height: 20), // Add some space
+              SizedBox(height: 20),
               Card(
-                margin: EdgeInsets.symmetric(horizontal: 30.0, vertical: 20), // Adjust vertical margin
-                elevation: 30.0,
+                margin: EdgeInsets.symmetric(horizontal: 30.0, vertical: 20),
+                elevation: 10.0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.all(16.0),
+                  padding: EdgeInsets.all(20.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -131,6 +130,10 @@ class _AvailableSlots1PageState extends State<AvailableSlots1Page> {
                         controller: _pidController,
                         decoration: InputDecoration(
                           hintText: 'PID',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide(color: Colors.indigo),
+                          ),
                         ),
                       ),
                       SizedBox(height: 20.0),
@@ -138,6 +141,10 @@ class _AvailableSlots1PageState extends State<AvailableSlots1Page> {
                         controller: _nameController,
                         decoration: InputDecoration(
                           hintText: 'Name',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide(color: Colors.indigo),
+                          ),
                         ),
                       ),
                       SizedBox(height: 20.0),
@@ -153,7 +160,7 @@ class _AvailableSlots1PageState extends State<AvailableSlots1Page> {
                           SizedBox(width: 20),
                           Expanded(
                             child: Text(
-                              widget.selectedDate.toString(),
+                              widget.selectedDate.toLocal().toString().split(' ')[0],
                               style: TextStyle(fontSize: 16),
                             ),
                           ),
@@ -162,7 +169,6 @@ class _AvailableSlots1PageState extends State<AvailableSlots1Page> {
                       SizedBox(height: 20.0),
                       ElevatedButton(
                         onPressed: () {
-                          // Handle button press
                           submitAppointment(context);
                         },
                         style: ElevatedButton.styleFrom(
@@ -170,7 +176,8 @@ class _AvailableSlots1PageState extends State<AvailableSlots1Page> {
                             borderRadius: BorderRadius.circular(20.0),
                           ),
                           padding: EdgeInsets.all(16.0),
-                          backgroundColor: Colors.blue, // You can change the color here
+                          backgroundColor: Colors.indigo[400], // Classic indigo button color
+                          foregroundColor: Colors.white, // Set text color to white
                         ),
                         child: Text('Submit'),
                       ),
@@ -197,18 +204,14 @@ class _AvailableSlots1PageState extends State<AvailableSlots1Page> {
       );
 
       if (response.statusCode == 200) {
-        // Show success Snackbar
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Appointment submitted successfully'),
             duration: Duration(seconds: 1),
           ),
         );
-        // Navigate back to the previous page after showing the Snackbar
-          Navigator.pop(context);
-
+        Navigator.pop(context);
       } else {
-        // Show failure Snackbar
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Failed to submit appointment'),
@@ -217,7 +220,6 @@ class _AvailableSlots1PageState extends State<AvailableSlots1Page> {
         );
       }
     } catch (e) {
-      // Show error Snackbar
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Error: $e'),
@@ -227,7 +229,6 @@ class _AvailableSlots1PageState extends State<AvailableSlots1Page> {
     }
   }
 
-
   @override
   void dispose() {
     _pidController.dispose();
@@ -235,3 +236,4 @@ class _AvailableSlots1PageState extends State<AvailableSlots1Page> {
     super.dispose();
   }
 }
+

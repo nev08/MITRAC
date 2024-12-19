@@ -65,7 +65,10 @@ class _MedicineDataState extends State<MedicineData> {
 
       if (response.statusCode == 200) {
         print('Medicine details deleted successfully');
-        await fetchMedicineData(); // Refresh medicine data after deleting
+        setState(() {
+          // Remove the deleted medicine from the list
+          medicineList.removeWhere((medicine) => medicine['Medicine_name'] == medicineName);
+        });
       } else {
         print('Failed to delete medicine details: ${response.statusCode}');
       }

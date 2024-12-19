@@ -79,6 +79,15 @@ class _SeeallState extends State<Seeall> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text(
+          'Patients List',
+          style: TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+            color: Colors.white, // Set the text color to white
+          ),
+        ),
+        centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
           onPressed: () {
@@ -97,27 +106,18 @@ class _SeeallState extends State<Seeall> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
-            padding: EdgeInsets.all(15),
+            padding: EdgeInsets.all(12),
             child: TextField(
-              controller: _searchController,
-              onChanged: (value) {
-                _onSearchChanged();
-              },
               decoration: InputDecoration(
-                hintText: 'Search',
-                hintStyle: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey,
-                ),
+                hintText: 'Patient id',
+                hintStyle: TextStyle(color: Colors.grey),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 filled: true,
                 fillColor: Colors.white,
-                contentPadding: EdgeInsets.symmetric(horizontal: 12),
+                contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
               ),
-              keyboardType: TextInputType.text,
-              textInputAction: TextInputAction.search,
             ),
           ),
           SizedBox(height: 15),
@@ -148,7 +148,7 @@ class _SeeallState extends State<Seeall> {
                       children: [
                         Text('Name: ${patient['name']}'),
                         Text('Sex: ${patient['sex']}'),
-                        Text('Mobile Number: ${patient['mobile_number']}'),
+                        //Text('Mobile Number: ${patient['mobile_number']}'),
                         // Add other patient details as needed
                       ],
                     ),
@@ -198,7 +198,28 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Patient Details'),
+        title: Text(
+          'Patients Details',
+          style: TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+            color: Colors.white, // Set the text color to white
+          ),
+        ),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        backgroundColor: Colors.indigo[300],
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(30),
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20),
@@ -218,7 +239,7 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                     child: Center(
                       child: patientDetails['img1'] != null
                           ? Image.network(
-                        'http://'+ip+'/app/' + patientDetails['img1'],
+                        ip +"/"+ patientDetails['img1'],
                         fit: BoxFit.cover,
                         width: 200, // Adjust this value to match the size of the SizedBox
                         height: 200, // Adjust this value to match the size of the SizedBox

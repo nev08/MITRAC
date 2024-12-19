@@ -23,7 +23,7 @@ class _ScorecardPageState extends State<ScorecardPage> {
 
   Future<void> _fetchScores() async {
     try {
-      var url = Uri.parse(get_dscore);
+      var url = Uri.parse(get_dscore); // Use the correct URL for scores
       var body = jsonEncode({'id': widget.patientId});
 
       var response = await http.post(
@@ -36,7 +36,17 @@ class _ScorecardPageState extends State<ScorecardPage> {
         var data = json.decode(response.body);
         if (data['success']) {
           setState(() {
-            _scores = List<Map<String, dynamic>>.from(data['data']);
+            _scores = List<Map<String, dynamic>>.from(data['data']).map((score) {
+              score['attitude'] = score['score'] >= 0 ? 'positive' : 'negative';
+              return score;
+            }).toList();
+
+            // Sort the scores by date in descending order
+            _scores.sort((a, b) {
+              DateTime dateA = DateTime.parse(a['date']);
+              DateTime dateB = DateTime.parse(b['date']);
+              return dateB.compareTo(dateA);
+            });
           });
         } else {
           print('Failed to fetch scores: ${data['message']}');
@@ -46,6 +56,18 @@ class _ScorecardPageState extends State<ScorecardPage> {
       }
     } catch (e) {
       print('Error: $e');
+    }
+  }
+
+  String _getAdherenceStatus(int score) {
+    if (score > 2) {
+      return 'Low Adherence';
+    } else if (score == 1 || score == 2) {
+      return 'Medium Adherence';
+    } else if (score == 0) {
+      return 'High Adherence';
+    } else {
+      return 'Unknown Status';
     }
   }
 
@@ -63,34 +85,41 @@ class _ScorecardPageState extends State<ScorecardPage> {
         itemBuilder: (context, index) {
           var score = _scores[index];
           return Card(
-            elevation: 8,
-            margin: EdgeInsets.all(20),
-            color: Colors.white70,
+            margin: EdgeInsets.all(10),
+            elevation: 5,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
+              side: BorderSide(color: Colors.grey[400]!, width: 1),
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Date: ${score['date']}",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+            child: ListTile(
+              contentPadding: EdgeInsets.all(15),
+              title: Text(
+                'Score on ${score['date']}', // Display date
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              subtitle: RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'Score: ${score['score']}/10\n',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.black,
+                        height: 2, // Adjust the height value for line spacing
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    "Score: ${score['score']}/10",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
+                    TextSpan(
+                      text: 'Attitude: ${score['attitude'] == 'positive' ? 'Positive attitude towards medication' : 'Negative attitude towards medication'}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: score['attitude'] == 'positive' ? Colors.green : Colors.red,
+                        height: 2, // Same height to ensure consistent spacing
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );

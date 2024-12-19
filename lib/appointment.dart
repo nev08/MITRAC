@@ -130,7 +130,7 @@ class _StatusPageState extends State<StatusPage> {
               ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(right: 10.0),
+                  padding: const EdgeInsets.only(right: 8.0),
                   child: ElevatedButton(
                     onPressed: () {
                       setState(() {
@@ -191,7 +191,7 @@ class _StatusPageState extends State<StatusPage> {
                                   color: Colors.black,
                                 ),
                               ),
-                              SizedBox(width: 60),
+                              SizedBox(width: 40),
                               ElevatedButton(
                                 onPressed: () {
                                   // Add functionality if needed

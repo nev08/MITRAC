@@ -10,6 +10,7 @@ import 'excercise_video.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:math';
+import 'common.dart';
 
 class ct_dash extends StatefulWidget {
   final String? selectedRelationship;
@@ -363,7 +364,7 @@ class _ct_dashState extends State<ct_dash> {
   }
 
   Future<double> fetchStreakPercentage(int id) async {
-    final response = await http.get(Uri.parse('http://192.168.214.213:80/app/STREAKZ.php?id=$id'));
+    final response = await http.get(Uri.parse(ip+"/"+'STREAKZ.php?id=$id'));
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       double streakPercentage = data['streakPercentage'] / 100;
@@ -378,9 +379,10 @@ class _ct_dashState extends State<ct_dash> {
     }
   }
 
+
   void sendNotificationToDoctor(int patientId) async {
     final response = await http.post(
-      Uri.parse('http://your-server-url/send-notification.php'),
+      Uri.parse(insert_noti),
       body: jsonEncode({
         'patientId': patientId,
         'message': 'Patient ID $patientId has missed three days of medication'

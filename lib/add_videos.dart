@@ -149,7 +149,8 @@ class _AddVideosScreenState extends State<AddVideosScreen> {
                     GestureDetector(
                       onTap: () async {
                         final picker = ImagePicker();
-                        final pickedFile = await picker.getVideo(source: ImageSource.gallery);
+                        final pickedFile = await picker.pickVideo(source: ImageSource.gallery);
+
 
                         if (pickedFile != null) {
                           setState(() {

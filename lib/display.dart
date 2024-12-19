@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
-import 'excercise_video.dart'; // Import the file with the Video class
+import 'excercise_video.dart'; // Assuming this contains the Video class
 
 class VideoPlayerPage extends StatefulWidget {
   final Video video;
@@ -32,7 +32,9 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Video Player'),
+        backgroundColor: Colors.indigo[300], // Soft indigo for a classic touch
+        title: Text('Execrcise Video', style: TextStyle( color: Colors.black)),
+        centerTitle: true, // Centered title for a clean look
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -43,18 +45,33 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   if (_controller.value.hasError) {
+                    print("not working");
                     return Center(child: Text('Error: ${_controller.value.errorDescription}'));
                   }
                   return Container(
-                    color: Colors.black,
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(15), // Rounded corners for the video section
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 10, // Subtle shadow for depth
+                          offset: Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    margin: EdgeInsets.all(16), // Margin for proper spacing
                     height: 300, // Fixed height for the video container
                     child: Stack(
                       alignment: Alignment.bottomCenter,
                       children: [
                         Center(
-                          child: AspectRatio(
-                            aspectRatio: _controller.value.aspectRatio,
-                            child: VideoPlayer(_controller),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: AspectRatio(
+                              aspectRatio: _controller.value.aspectRatio,
+                              child: VideoPlayer(_controller),
+                            ),
                           ),
                         ),
                         VideoProgressIndicator(_controller, allowScrubbing: true),
@@ -73,18 +90,26 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
               },
             ),
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     widget.video.title,
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.indigo[900], // Darker indigo for a classic contrast
+                    ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 12), // Space between title and description
                   Text(
                     widget.video.description,
-                    style: TextStyle(fontSize: 16),
+                    style: TextStyle(
+                      fontSize: 16,
+                      height: 1.5, // Line height for better readability
+                      color: Colors.black87,
+                    ),
                   ),
                 ],
               ),
@@ -104,8 +129,14 @@ class _ControlsOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.black.withOpacity(0.5),
-      padding: EdgeInsets.symmetric(vertical: 8.0),
+      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+      decoration: BoxDecoration(
+        color: Colors.black54, // Semi-transparent background
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(15),
+          bottomRight: Radius.circular(15),
+        ), // Match video corner radius
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [

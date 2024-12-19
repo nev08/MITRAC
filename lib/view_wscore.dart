@@ -83,7 +83,7 @@ class _ScorecardsScreenState extends State<ScorecardsScreen> {
             child: ListTile(
               contentPadding: EdgeInsets.all(15),
               title: Text(
-                'Score on ${score['date']}', // Assumes 'date' is a field in the table
+                'Date: ${score['date']}', // Assumes 'date' is a field in the table
                // style: TextStyle(fontWeight: FontWeight.bold),
               ),
               subtitle: RichText(
@@ -94,7 +94,8 @@ class _ScorecardsScreenState extends State<ScorecardsScreen> {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16, // Adjust the size as needed
-                        color: Colors.black, // Set the color to black or any other color
+                        color: Colors.black,
+                        height:2// Set the color to black or any other color
                       ),
                     ),
                     TextSpan(
@@ -102,7 +103,8 @@ class _ScorecardsScreenState extends State<ScorecardsScreen> {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
-                        color: Colors.black, // Set the color to black or any other color// Adjust the size as needed
+                        color: Colors.black,
+                          height:2// Set the color to black or any other color// Adjust the size as needed
                       ),
                     ),
                   ],

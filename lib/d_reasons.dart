@@ -51,43 +51,17 @@ class _d_ReasonsScreenState extends State<d_ReasonsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.indigo[300],
+        title: Text('Reasons'),
+      ),
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.all(10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Card(
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20.0),
-                    topRight: Radius.circular(20.0),
-                  ),
-                ),
-                child: Container(
-                  height: 90.0,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20.0),
-                      topRight: Radius.circular(20.0),
-                    ),
-                    color: Colors.blue,
-                  ),
-                ),
-              ),
-              SizedBox(height: 30.0),
-              Padding(
-                padding: EdgeInsets.only(left: 20.0),
-                child: Text(
-                  'Reasons',
-                  style: TextStyle(
-                    fontSize: 22.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              SizedBox(height: 30.0),
+              SizedBox(height: 50.0),
               Card(
                 elevation: 30.0,
                 margin: EdgeInsets.symmetric(horizontal: 20.0),
@@ -106,39 +80,43 @@ class _d_ReasonsScreenState extends State<d_ReasonsScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 30.0),
-              ElevatedButton(
-                onPressed: () {
-                  String reasons = _reasonsController.text.trim();
-                  if (widget.patientId != null && reasons.isNotEmpty) {
-                    _saveReasons(widget.patientId!, reasons);
-                    // Clear the text field after saving
-                    _reasonsController.clear();
-                    // Navigate to another screen
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ct_dash(
-                          selectedRelationship: widget.selectedRelationship,
-                          c_id: widget.c_id,
-                          patientId: widget.patientId,
+              SizedBox(height: 30),
+              SizedBox(
+                height: 50.0,
+                child : ElevatedButton(
+                  onPressed: () {
+                    String reasons = _reasonsController.text.trim();
+                    if (widget.patientId != null && reasons.isNotEmpty) {
+                      _saveReasons(widget.patientId!, reasons);
+                      // Clear the text field after saving
+                      _reasonsController.clear();
+                      // Navigate to another screen
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ct_dash(
+                            selectedRelationship: widget.selectedRelationship,
+                            c_id: widget.c_id,
+                            patientId: widget.patientId,
+                          ),
                         ),
-                      ),
-                    );
-                  } else {
-                    // Handle empty reasons input or null patientId
-                    print('Reasons or patientId cannot be null');
-                  }
-                },
-                child: Text(
-                  'Save',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
+                      );
+
+                    } else {
+                      // Handle empty reasons input or null patientId
+                      print('Reasons or patientId cannot be null');
+                    }
+                  },
+                  child: Text(
+                    'Save',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              ),
-
+              )
             ],
           ),
         ),

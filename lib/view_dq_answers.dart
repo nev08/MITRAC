@@ -174,9 +174,11 @@ class _WeeklyState extends State<weekly> {
               child: Text('View Scorecard'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.indigo[300], // Background color
-                // Colors.white, // Text color
+                foregroundColor: Colors.white,       // Text color
                 padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12), // Button padding
-                textStyle: TextStyle(fontSize: 18), // Text style
+                textStyle: TextStyle(
+                  fontSize: 18,
+                ),
               ),
             ),
           ],

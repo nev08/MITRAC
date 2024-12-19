@@ -53,7 +53,7 @@ class _SQ1State extends State<SQ1> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.indigo[300],
-        title: Text('Daily Question'),
+        title: Text('Weekly Question'),
       ),
       body: SingleChildScrollView(
         child: Column(

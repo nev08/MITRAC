@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'common.dart';
 
 class ProgressChart extends StatefulWidget {
   final String patientId;
@@ -13,24 +14,34 @@ class ProgressChart extends StatefulWidget {
 class _ProgressChartState extends State<ProgressChart> {
   double streakPercentage = 0.0;
 
-  Future<void> fetchStreakPercentage(int id) async {
-    final response = await http.get(Uri.parse('http://192.168.214.213:80/app/STREAKZ.php?id=${widget.patientId}'));
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      setState(() {
-        streakPercentage = data['streakPercentage'] / 100; // Assuming streakPercentage is in percentage (e.g., 50 means 50%)
-      });
-    } else {
-      // Handle error
-      print('Failed to load streak percentage');
+  Future<void> fetchStreakPercentage() async {
+    print("im called");
+    try {
+      final response = await http.get(Uri.parse( ip+"/"+'STREAKZ.php?id=${widget.patientId}'));
+      print('Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        setState(() {
+          streakPercentage = data['streakPercentage'] / 100;
+        });
+      } else {
+        // Handle error: response not 200
+        print('Error: Failed to load streak percentage');
+      }
+    } catch (error) {
+      // Handle exception
+      print('Exception occurred: $error');
     }
   }
+
 
   @override
   void initState() {
     super.initState();
     // Replace `1` with your actual patient ID
-    fetchStreakPercentage(1);
+    fetchStreakPercentage();
   }
 
   @override

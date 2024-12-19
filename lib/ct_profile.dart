@@ -205,7 +205,7 @@ class _CaretakerProfileState extends State<CaretakerProfile> {
                         child: Center(
                           child: patientDetails['img1'] != null
                               ? Image.network(
-                            'http://' + ip + '/app/' + patientDetails['img1'],
+                            ip +'/'+patientDetails['img1'],
                             fit: BoxFit.cover,
                             width: 200,
                             // Adjust this value to match the size of the SizedBox

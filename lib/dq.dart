@@ -78,13 +78,13 @@ class _Q1State extends State<Q1> {
       case 7:
       case 9:
       case 10:
-        return answer ? 1 : 0; // Plus 1 for true, 0 for false
+        return answer ? 1 : -1; // Plus 1 for true, 0 for false
 
       case 2:
       case 5:
       case 6:
       case 8:
-        return answer ? -1 : 0; // Minus 1 for true, 0 for false
+        return answer ? -1 : 1; // Minus 1 for true, 0 for false
 
       default:
         return 0;

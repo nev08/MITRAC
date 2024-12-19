@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.0+1
+version: 1.0.0+3
 
 environment:
   sdk: '>=3.3.1 <4.0.0'
@@ -33,29 +33,32 @@ dependencies:
   english_words: ^4.0.0
   provider: ^6.1.2
   mysql1: ^0.20.0
-  http: ^0.13.3
+  http: ^1.2.2
   shared_preferences: ^2.0.8
   fluentui_system_icons: ^1.1.232
-  image_picker: ^0.8.4+2
+  image_picker: ^1.1.2
   video_player: ^2.2.11
   path_provider: ^2.0.11
-  image: ^3.0.1
-  get_thumbnail_video: ^0.6.1
-  camera: ^0.9.4+5
-  flick_video_player: ^0.8.0
-
-
-
-
-
-
+  package_info_plus: ^8.0.2
+  image: ^4.2.0
+  camera: ^0.11.0+2
+  flick_video_player: ^0.9.0
+  win32: ^5.5.0
+  file_picker: ^5.5.0
+  fluttertoast: ^8.0.8
+  permission_handler: ^10.2.0
+  cupertino_icons: ^1.0.6
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.6
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/page1.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

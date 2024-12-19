@@ -94,7 +94,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                         child: Center(
                           child: doctorDetails['img'] != null && doctorDetails['img'].isNotEmpty
                               ? Image.network(
-                            'http://'+ip+'/app/' + doctorDetails['img'],
+                            ip+"/"+ doctorDetails['img'],
                             fit: BoxFit.cover,
                           )
                               : Icon(
